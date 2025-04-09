@@ -1,0 +1,128 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import "bootstrap-icons/font/bootstrap-icons.css";
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+
+*{
+  padding: 0px;
+  margin: 0px;
+}
+:root {
+  --neo: #23FF25;
+  --darkerbtn:#109009;
+  --greendark:#109009 ;
+  --darker: #111111  ;
+  --btn:#16C60C ;
+}
+ body{
+  background-color: #000000;
+  font-family: 'Montserrat', sans-serif;
+ }
+.logo{
+  color: var(--greendark);
+  font-size: 28px; 
+  font-weight: 900;
+  font-family: "Archivo Black", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+ .nav-link {
+  font-size: 22px; /* Increase text size */
+  font-weight: 900; /* Make it bold */
+  display: flex;
+  color: var(--greendark);
+  align-items: center; /* Align text and icon */
+  gap: 8px; /* Add spacing between icon and text */
+}
+.nav-link i {
+  font-size: 32px; /* Increase icon size */
+}
+
+.nav-link.active, .nav-link:focus, .nav-link:hover,.logo {
+  color: var(--neo) !important; /* Change color when active */
+}
+
+.card-border{
+  border-radius: 50px;
+}
+.card-border-img{
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+}
+.card{
+  background-color: transparent;
+}
+.card-text{
+  font-weight: 700;
+  font-size: larger;
+}
+.card-title{
+  font-weight: 900;
+  font-size: x-large;
+}
+.card-body{
+  background-color: var(--darker);
+}
+
+.navbar-toggler {
+  border-color: var(--greendark) !important; /* Change the border color */
+}
+
+.navbar-toggler-icon {
+  background-color: transparent; /* Remove default background */
+}
+
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after {
+  background-color: var(--greendark) !important; /* Change icon color */
+}
+
+
+
+/* Alternative way */
+.navbar-toggler-icon {
+  filter: invert(82%) sepia(41%) saturate(748%) hue-rotate(82deg) brightness(102%) contrast(102%);
+}
+
+.navbar-toggler {
+  border: none !important; 
+  outline: none !important; 
+}
+.buybtn{
+  background-color: var(--btn);
+  color: rgb(0, 0, 0);
+  width: 100%;
+  border-radius: 10px;
+  
+  font-weight: 1000;
+  text-decoration: none; 
+  display: inline-block; 
+  text-align: center;
+}
+.btn{
+  background-color: var(--btn);
+  color: rgb(0, 0, 0);
+  width: 100%;
+  border-radius: 10px;
+  
+  font-weight: 1000;
+}
+.btn:hover ,.buybtn:hover{
+  background-color: var(--darkerbtn);
+  color: rgb(0, 0, 0);
+}
+
+
+.custom-input:focus,
+.custom-input:hover {
+  border-color: var(--btn) !important;
+  box-shadow: 0 0 0 0.2rem rgba(22, 198, 12, 0.25);
+}
+
+
+.login{
+  text-decoration: none;
+  font-weight: "bold";
+  color: var(--neo);
+
+}
