@@ -69,7 +69,19 @@ const ProductDetails = () => {
      
   }
 
-  if (!singleproduct) return <p className="text-center mt-5">Loading...</p>;
+  if (!singleproduct) {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "80vh" }}
+      >
+        <div className="spinner-border logo" role="status">
+          <span className="visually-hidden">Loading...</span>
+          
+        </div>
+      </div>
+    );
+  }
 
   return (
     <section className="d-flex justify-content-center " style={{ minHeight: "100vh" }}>
