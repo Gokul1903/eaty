@@ -6,7 +6,7 @@ const Card = ({ title, price,id,availability,image}) => {
       <div className="card my-3 "  style={{ width: "100%",border:"none" }}>
         <img 
           className="card-img-top rounded-top-4" 
-          src={`${IMG_URI}/eaty-images/${image.split('/').pop()}`}
+          src={`${IMG_URI}/eaty-images/${image.split('/').pop()}.${image.split('.').pop()}`}
           alt={"image"} 
           style={{ height: "200px", objectFit: "fill" }} 
           loading="lazy"
