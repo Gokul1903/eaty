@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
 const API_URL = import.meta.env.VITE_API_URL;
 import { useNavigate } from "react-router-dom";
+const IMG_URI=import.meta.env.VITE_CLOUDINARY_BASE_URL
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -91,7 +92,7 @@ const ProductDetails = () => {
             <div className="card text-center mx-auto my-3" style={{ width: "100%", maxWidth: "400px", border: "none" }}>
               <img
                 className="card-img-top rounded-4 mb-3"
-                src={`${API_URL}${singleproduct.image}`}
+                src={`${IMG_URI}/eaty-images/${singleproduct.image.split('/').pop()}.${singleproduct.image.split('.').pop()}`}
                 alt={"product"}
                 style={{ height: "250px", objectFit: "cover" }}
                 loading="lazy"
