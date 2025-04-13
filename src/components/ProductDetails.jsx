@@ -11,6 +11,8 @@ const ProductDetails = () => {
 
   const[quantity,setquantity]=useState(1);
   const [address, setAddress] = useState("");
+  const [room,setRoom]=useState("")
+  const[block,setBlock]=useState("")
   const [message, setMessage] = useState("");
   const ownerId = singleproduct?.ShopId;
 
@@ -28,7 +30,7 @@ const ProductDetails = () => {
       }
       const orderData={
         ownerId,
-        Address:address,
+        Address:room+" "+block+" "+address,
         items:[
           {
             productId: singleproduct._id,
@@ -50,7 +52,10 @@ const ProductDetails = () => {
         if(data.success){
           setquantity(1)
           setAddress("")
+          setRoom("")
+          setBlock("")
           setMessage(" Order placed successfully!");
+
           setTimeout(() => {
             navigate("/Home");
           }, 1500);
@@ -124,9 +129,30 @@ const ProductDetails = () => {
                     required
                   />
                 </div>
-
+                
                 <div className="mb-3 text-start">
-                  <label htmlFor="address" className="form-label">Delivery Address</label>
+                  <label htmlFor="address" className="form-label">Room No/Name</label>
+                  <input
+                    id="address"
+                    className="form-control"
+                    value={room}
+                    onChange={(e) => setRoom(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="mb-3 text-start">
+                  <label htmlFor="address" className="form-label">Block</label>
+                  <input
+                    id="address"
+                    className="form-control"
+                    value={block}
+                    onChange={(e) => setBlock(e.target.value)}
+                    required
+                  />
+                </div>
+                
+                <div className="mb-3 text-start">
+                  <label htmlFor="address" className="form-label">Additional Address Details</label>
                   <textarea
                     id="address"
                     className="form-control"

@@ -11,7 +11,7 @@ const Card = ({ title, price,id,availability,image}) => {
           style={{ height: "200px", objectFit: "fill" }} 
           loading="lazy"
         />
-        {console.log(`${IMG_URI}/eaty-images/${image.split('/').pop()}`)}
+        
         <div className="card-body nav-bg text-white rounded-bottom-4 ">
         
           <h5 className="card-title text-center py-2 text-capitalize">{title} </h5>
