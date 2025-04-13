@@ -19,7 +19,7 @@ const Card = ({ title, price,id,availability,image}) => {
           <p className="card-text text-center pb-4">₹{price}/-</p>
           <div className="">
             
-          {availability ? <Link to={`/product/${id}`} className="buybtn py-2">Buy Now</Link>: <p className="card-text text-danger text-center pb-4">Out of stock</p>}
+          {availability ? <Link to={`/product/${id}`} className="buybtn py-2">Buy Now</Link>: <p className="card-text text-danger text-center pb-4">Product not available</p>}
           
         </div>
 
