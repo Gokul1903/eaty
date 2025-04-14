@@ -11,6 +11,7 @@ import Forgot from "./authComponent/forgot";
 import VerifyForgot from "./authComponent/verifyForgot"
 import Reset from "./authComponent/reset"
 import NotFound from "./components/NotFound";
+import Historylist from "./components/Historylist";
 
 const MainLayout=()=>{
   return(<div className="container ">
@@ -19,6 +20,8 @@ const MainLayout=()=>{
         <Routes>
           <Route path="/Home" element={<CardList />} />
           <Route path="/product/:id" element={<ProductDetails/>} />
+          <Route path="/History" element={<Historylist />} />
+
           <Route path="*" element={<NotFound/>} />
         </Routes>
         </div>

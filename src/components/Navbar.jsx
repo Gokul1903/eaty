@@ -106,6 +106,15 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="nav-item">
+              <Link
+                className={`nav-link ${location.pathname === "/History" ? "active" : ""}`}
+                to="/History"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <i className="bi bi-clock-history"></i> History
+              </Link>
+            </li>
+            <li className="nav-item">
               <button
                 className="nav-link btn-link"
                 onClick={() => {

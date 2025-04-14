@@ -6,7 +6,7 @@ const GlobalProvider=({children})=>{
     const[products,setproduct]=useState([]);
     const[singleproduct,setSingleproduct]=useState(null);
     const[profile,setProfile]=useState(null);
-
+    const[orders,setOrders]=useState([])
 
     const fetchProduct= async()=>{
         try {
@@ -43,7 +43,10 @@ const GlobalProvider=({children})=>{
 
     const fetchProfile =async ()=>{
         try {
-            const response=await fetch(`${API_URL}/user/getProfile`,{"Content-Type": "application/json",headers:{Authorization:`Bearer ${localStorage.getItem("token")}`}});
+            const response=await fetch(`${API_URL}/user/getProfile`,{
+                method: "GET",
+                credentials: "include",
+              });
             const data=response.json()
             if(data.success){
                 setProfile(data.user)
@@ -55,10 +58,29 @@ const GlobalProvider=({children})=>{
             console.error("error fetching products: ",error)
         }
     }
+    const fetchOrder = async () => {
+        try {
+          const response = await fetch(`${API_URL}/user/getHistory`, {
+            method: "GET",
+            credentials: "include",
+          });
+          const data = await response.json();
+          if (data.success) {
+            setOrders(data.orders);
+            
+          } else {
+            console.error("Failed to fetch orders:", data.message);
+            setMessage(data.message)
+          }
+          
+        } catch (error) {
+          console.error("Error fetching orders:", error);
+        }
+      };
 
     return(
         <GlobalContext.Provider
-        value={{products,singleproduct,profile,fetchProduct,fetchSingle,fetchProfile}}
+        value={{products,singleproduct,profile,fetchProduct,fetchSingle,fetchProfile,fetchOrder,orders}}
         >{children}</GlobalContext.Provider>
     );
     
