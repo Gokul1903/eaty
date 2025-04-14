@@ -8,7 +8,7 @@ const Card = ({ title, price,id,availability,image}) => {
           className="card-img-top rounded-top-4" 
           src={`${IMG_URI}/eaty-images/${image.split('/').pop()}.${image.split('.').pop()}`}
           alt={"image"} 
-          style={{ height: "200px", objectFit: "fill" }} 
+          style={{ height: "200px", objectFit: "cover" }} 
           loading="lazy"
         />
         
