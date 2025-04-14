@@ -27,7 +27,7 @@
   font-style: normal;
 }
  .nav-link {
-  font-size: 22px; /* Increase text size */
+  font-size: 18px; /* Increase text size */
   font-weight: 900; /* Make it bold */
   display: flex;
   color: var(--greendark);
@@ -35,7 +35,7 @@
   gap: 8px; /* Add spacing between icon and text */
 }
 .nav-link i {
-  font-size: 32px; /* Increase icon size */
+  font-size: 18px; /* Increase icon size */
 }
 
 .nav-link.active, .nav-link:focus, .nav-link:hover,.logo {
