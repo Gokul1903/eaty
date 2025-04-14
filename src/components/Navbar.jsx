@@ -1,21 +1,44 @@
-import { Link, useLocation,useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 
 const API_URL = import.meta.env.VITE_API_URL;
+
 const Navbar = () => {
-  const navigate=useNavigate()
-  const location = useLocation(); // Get current page URL
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  // Close menu on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
   const handleLogout = async () => {
     try {
       const res = await fetch(`${API_URL}/auth/logout`, {
         method: "POST",
-        credentials: "include", // this sends cookies
+        credentials: "include",
       });
-  
+
       const data = await res.json();
-  
+
       if (data.success) {
-        // Optional: redirect to login or home
-        navigate("/Login") // Or use navigate("/Login") if you want to use `useNavigate`
+        navigate("/Login");
       } else {
         alert("Logout failed: " + data.message);
       }
@@ -23,40 +46,77 @@ const Navbar = () => {
       console.error("Logout error:", error);
     }
   };
-  
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-white bg-black sticky-top">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-black sticky-top">
       <div className="container">
-        
         <Link className="navbar-brand logo" to="/Home">
-          {/* <img className="rounded-4 " src="src/IMG-20250219-WA0010.jpg" width="75" height="65" alt="Logo" /> */}
           EATY
         </Link>
 
-        
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-          <span className="navbar-toggler-icon"></span>
+        {/* Custom toggle button */}
+        <button
+          className="navbar-toggler"
+          type="button"
+          onClick={() => setIsMenuOpen((prev) => !prev)}
+          style={{
+            border: "none",
+            background: "transparent",
+            outline: "none",
+          }}
+        >
+          <span
+            className="navbar-toggler-icon"
+            style={{
+              filter:
+                "invert(54%) sepia(97%) saturate(630%) hue-rotate(74deg) brightness(120%) contrast(114%)",
+            }}
+          ></span>
         </button>
 
-        {/* Navbar items */}
-        <div className="collapse navbar-collapse " id="navbarNav">
-          <ul className="navbar-nav ms-auto ">
+        {/* Backdrop */}
+        {isMenuOpen && (
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100vw",
+              height: "100vh",
+              zIndex: 1,
+            }}
+          />
+        )}
+
+        {/* Menu */}
+        <div
+          className={`collapse navbar-collapse ${isMenuOpen ? "show" : ""}`}
+          id="navbarNav"
+          ref={menuRef}
+          style={{ zIndex: 2 }}
+        >
+          <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <Link className={`nav-link ${location.pathname === "/Home" ? "active" : ""}`} to="/Home">
+              <Link
+                className={`nav-link ${location.pathname === "/Home" ? "active" : ""}`}
+                to="/Home"
+                onClick={() => setIsMenuOpen(false)}
+              >
                 <i className="bi bi-house-door"></i> Home
               </Link>
             </li>
-            {/* <li className="nav-item ">
-              <Link className={`nav-link ${location.pathname === "/profile" ? "active" : ""}`} to="/profile">
-                <i className="bi bi-person"></i> Profile
-              </Link>
-            </li> */}
-            <li className="nav-item ">
-              <button className="nav-link btn-link " onClick={handleLogout} style={{ textDecoration: 'none' }}>
-              <i className="bi bi-box-arrow-right"></i> Logout
+            <li className="nav-item">
+              <button
+                className="nav-link btn-link"
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  handleLogout();
+                }}
+                style={{ textDecoration: "none" }}
+              >
+                <i className="bi bi-box-arrow-right"></i> Logout
               </button>
             </li>
-
           </ul>
         </div>
       </div>
