@@ -1,13 +1,19 @@
-import { useEffect, useContext, useRef, useState } from "react";
+import { useEffect, useContext, useState } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 import HistoryCard from "./Historycard";
 
 const Historylist = () => {
-  const { orders, fetchOrder, errmessage } = useContext(GlobalContext);
+  const { orders, fetchOrder, message } = useContext(GlobalContext);
 
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchOrder();
+    const fetchData = async () => {
+      await fetchOrder();
+      setLoading(false);
+    };
+
+    fetchData();
 
     const interval = setInterval(() => {
       fetchOrder();
@@ -16,11 +22,8 @@ const Historylist = () => {
     return () => clearInterval(interval);
   }, []);
 
-  
-  
-
   // Unauthorized
-  if (errmessage === "Unauthorized" || errmessage === "Invalid Token") {
+  if (message === "Unauthorized" || message === "Invalid Token") {
     return (
       <section className="py-5">
         <div className="container">
@@ -32,8 +35,8 @@ const Historylist = () => {
     );
   }
 
-  // Loading
-  if (orders.length === 0) {
+  // Loading Spinner
+  if (loading) {
     return (
       <div
         className="d-flex justify-content-center align-items-center"
@@ -46,28 +49,35 @@ const Historylist = () => {
     );
   }
 
-  // UI
+  // No Orders
+  if (orders.length === 0) {
+    return (
+      <section className="py-5">
+        <div className="container text-center text-white ">
+          <h2>No order history</h2>
+        </div>
+      </section>
+    );
+  }
+
+  // UI - Orders Found
   return (
     <section className="py-5">
       <div className="container">
         <div className="row">
-          {
-            orders.map((order) =>
-               (
-                <div className="col-md-6" key={order._id}>
-                  <HistoryCard
-                    user={order.userId.name}
-                    address={order.Address}
-                    totalAmount={order.totalAmount}
-                    status={order.status}
-                    paymentMethod={order.paymentMethod}
-                    items={order.items}
-                    id={order._id}
-                  />
-                </div>
-              ) 
-            )
-          }
+          {orders.map((order) => (
+            <div className="col-md-6" key={order._id}>
+              <HistoryCard
+                user={order.userId.name}
+                address={order.Address}
+                totalAmount={order.totalAmount}
+                status={order.status}
+                paymentMethod={order.paymentMethod}
+                items={order.items}
+                id={order._id}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </section>

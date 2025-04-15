@@ -1,7 +1,12 @@
-import { Link } from "react-router-dom";
+
 const API_URL = import.meta.env.VITE_API_URL;
+import { useContext } from "react";
+import { GlobalContext } from "../context/GlobalContext";
+import { useNavigate } from "react-router-dom";
 
 const HistoryCard = ({ user, address, totalAmount, status, items, id }) => {
+  const navigate=useNavigate()
+  const { message, cancelOrder } = useContext(GlobalContext);
   return (
     <div className="card my-3" style={{ width: "100%" }}>
       <div className="card-body ">
@@ -22,10 +27,7 @@ const HistoryCard = ({ user, address, totalAmount, status, items, id }) => {
               );
             })}
         </ul>
-        <p
-  className="card-text text-white text-capitalize"
-  
->
+        <p className="card-text text-white text-capitalize">
   Status : <span style={{
     color:
       status === "pending"
@@ -37,6 +39,15 @@ const HistoryCard = ({ user, address, totalAmount, status, items, id }) => {
         : "white", // Default color if none of the conditions match
   }}>{status}</span>
 </p>
+      <button onClick={async()=>{
+        const confirmcancel = window.confirm("Are you sure?");
+        if (confirmcancel) {
+          await cancelOrder(id);
+          navigate("/Home");
+        }
+        
+        
+        }} className="cancelbtn">Cancel</button>
         
       </div>
     </div>
