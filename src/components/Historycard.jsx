@@ -39,7 +39,7 @@ const HistoryCard = ({ user, address, totalAmount, status, items, id }) => {
         : "white", // Default color if none of the conditions match
   }}>{status}</span>
 </p>
-      <button onClick={async()=>{
+      {status==="pending"?<button onClick={async()=>{
         const confirmcancel = window.confirm("Are you sure?");
         if (confirmcancel) {
           await cancelOrder(id);
@@ -47,7 +47,7 @@ const HistoryCard = ({ user, address, totalAmount, status, items, id }) => {
         }
         
         
-        }} className="cancelbtn">Cancel</button>
+        }} className="cancelbtn">Cancel</button>:null}
         
       </div>
     </div>
