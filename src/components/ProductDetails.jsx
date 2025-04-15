@@ -10,6 +10,7 @@ const ProductDetails = () => {
   const { fetchSingle, singleproduct } = useContext(GlobalContext);
 
   const[quantity,setquantity]=useState(1);
+  const[availability,setAvailability]=useState(1);
   const [address, setAddress] = useState("");
   const [room,setRoom]=useState("")
   const[block,setBlock]=useState("")
@@ -31,6 +32,7 @@ const ProductDetails = () => {
       const orderData={
         ownerId,
         Address:room+" "+block+" "+address,
+        availability,
         items:[
           {
             productId: singleproduct._id,
@@ -106,7 +108,8 @@ const ProductDetails = () => {
                 <h5 className="card-title text-capitalize py-2">
                   {singleproduct.name}
                 </h5>
-                <p className="card-text pb-3">₹{singleproduct.price*quantity}/-</p>
+                <p className="card-text pb-1">₹{singleproduct.price*quantity}/-</p>
+                <p className="card-text ">{singleproduct.availability-quantity}  in stock</p>
 
                 <form onSubmit={handlesubmit} className="mt-3">
                 <div className="mb-2 text-start">
@@ -116,12 +119,14 @@ const ProductDetails = () => {
                     id="quantity"
                     className="form-control"
                     value={quantity}
-                    min="1"
-                    max="10"
+                    min={1}
+                    max={singleproduct.availability}
                     onChange={(e) => {
                       const value = parseInt(e.target.value);
-                      if (value >= 1 && value <= 10) {
+                      
+                      if (value >= 1 && value <= singleproduct.availability) {
                         setquantity(value);
+                        setAvailability(singleproduct.availability-quantity)
                       } else if (e.target.value === "") {
                         setquantity(""); 
                       }

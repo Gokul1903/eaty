@@ -16,7 +16,8 @@ const Card = ({ title, price,id,availability,image}) => {
         
           <h5 className="card-title text-center py-2 text-capitalize">{title} </h5>
           
-          <p className="card-text text-center pb-4">₹{price}/-</p>
+          <p className="card-text text-center ">₹{price}/-</p>
+          {availability ? <p className="card-text text-center ">{availability} in stock</p> :null}
           <div className="">
             
           {availability ? <Link to={`/product/${id}`} className="buybtn py-2">Buy Now</Link>: <p className="card-text text-danger text-center pb-4">Product not available</p>}
