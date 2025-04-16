@@ -137,3 +137,26 @@
   border: none;
   padding:0.375rem 0px;
 }
+
+.card-hover-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+.card-hover-effect {
+  transition: transform 0.4s ease, box-shadow 0.4s ease, filter 0.4s ease;
+  will-change: transform, filter;
+}
+
+/* Scale and highlight hovered card */
+.card-hover-wrapper:hover .card-hover-effect {
+  transform: scale(1.05);
+  z-index: 10;
+  box-shadow: 0 15px 25px rgba(0, 255, 0, 0.2);
+  filter: none !important;
+}
+
+/* Only apply blur to other cards when a card is hovered */
+.card-hover-group:has(.card-hover-wrapper:hover) .card-hover-wrapper:not(:hover) .card-hover-effect {
+  filter: blur(2px) brightness(0.8);
+}
