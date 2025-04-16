@@ -4,6 +4,7 @@ import { GlobalContext } from "../context/GlobalContext";
 const API_URL = import.meta.env.VITE_API_URL;
 import { useNavigate } from "react-router-dom";
 const IMG_URI=import.meta.env.VITE_CLOUDINARY_BASE_URL
+import OrderSuccess from "./Succes";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -56,11 +57,11 @@ const ProductDetails = () => {
           setAddress("")
           setRoom("")
           setBlock("")
-          setMessage(" Order placed successfully!");
+          setMessage("Order placed successfully!");
 
           setTimeout(() => {
             navigate("/Home");
-          }, 1500);
+          }, 3000);
         }
         else{
           setMessage(` Error: ${data.message}`)
@@ -173,7 +174,7 @@ const ProductDetails = () => {
                 </button>
 
               </form>
-              {message && <p className="mt-3">{message}</p>}
+              {message==="Order placed successfully!"? <OrderSuccess/> : <p className="mt-3">{message}</p>}
                 
               </div>
             </div>

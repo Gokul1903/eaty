@@ -160,3 +160,143 @@
 .card-hover-group:has(.card-hover-wrapper:hover) .card-hover-wrapper:not(:hover) .card-hover-effect {
   filter: blur(2px) brightness(0.8);
 }
+
+
+
+
+
+.order-success-container {
+  position: fixed;
+  inset: 0;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.eaty-brand {
+  color: #23FF25;
+  font-size: 28px;
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  margin-bottom: 15px;
+  z-index: 2;
+  animation: popIn 0.5s ease;
+}
+
+.order-text {
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  z-index: 2;
+  animation: fadeIn 1s ease;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Fireworks Container */
+.fireworks-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Firework Up Shot */
+.firework-launcher::before,
+.firework-launcher::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 2px;
+  height: 100px;
+  background: #23FF25;
+  left: 25%;
+  animation: shootUp 4s ease-in infinite;
+}
+
+.firework-launcher::after {
+  left: 75%;
+  animation-delay: 2s;
+}
+
+@keyframes shootUp {
+  0% { transform: translateY(0); opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateY(-300px); opacity: 0; }
+}
+
+/* Firework Explosion Particles */
+.firework-explosion {
+  position: absolute;
+  width: 20px;
+  height: 5px;
+  background: transparent;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.firework-explosion::before,
+.firework-explosion::after {
+  content: '';
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #23FF25;
+  border-radius: 50%;
+  opacity: 0;
+  animation: explode 2s ease-out infinite;
+}
+
+.firework-explosion::after {
+  background: #23FF25;
+}
+
+.fe1 {
+  animation-delay: 1s;
+}
+.fe2 {
+  animation-delay: 6s;
+}
+.fe3 {
+  animation-delay: 3s;
+}
+
+@keyframes explode {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+    top: -150px;
+    left: -10px;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+    box-shadow:
+      0 -20px 0 2px #23FF25,
+      20px 0 0 2px #23FF25,
+      -20px 0 0 2px #23FF25,
+      0 20px 0 2px #23FF25,
+      14px 14px 0 2px #23FF25,
+      -14px 14px 0 2px #23FF25,
+      14px -14px 0 2px #23FF25,
+      -14px -14px 0 2px #23FF25;
+  }
+  100% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+}
