@@ -12,6 +12,7 @@ import VerifyForgot from "./authComponent/verifyForgot"
 import Reset from "./authComponent/reset"
 import NotFound from "./components/NotFound";
 import Historylist from "./components/Historylist";
+import Footer from "./components/Footer";
 
 const MainLayout=()=>{
   return(<div className="container ">
@@ -33,6 +34,8 @@ const MainLayout=()=>{
 function App() {
   return (
     <BrowserRouter>
+    <div className="page-container">
+    <div className="content-wrap">
       <Routes>
           <Route path="/" element={<Register/>} ></Route>
           <Route path="/verify" element={<Verify/>} ></Route>
@@ -42,7 +45,8 @@ function App() {
           <Route path="/Reset" element={<Reset/>} />
           <Route path="/*" element={<MainLayout/>} ></Route>
           
-        </Routes>
+        </Routes></div>
+        <Footer/></div>
       
     </BrowserRouter>
   );

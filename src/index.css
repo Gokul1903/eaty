@@ -300,3 +300,42 @@
     opacity: 0;
   }
 }
+
+
+/* footer */
+
+.footer {
+  background-color: #111111;
+  color: #ffffff;
+  padding: 20px 0;
+  text-align: center;
+  font-size: 14px;
+  font-family: 'Arial', sans-serif;
+}
+
+.footer .gokul {
+  color: #23FF25;
+  font-weight: bold;
+}
+
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-wrap {
+  flex: 1;
+}
+  
