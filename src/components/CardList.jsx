@@ -7,9 +7,15 @@ import 'aos/dist/aos.css';
 
 const CardList = () => {
   const { products, fetchProduct } = useContext(GlobalContext);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchProduct();
+    const fetchdata=async()=>{
+      await fetchProduct();
+      setLoading(false)
+    }
+    fetchdata();
+    
     AOS.init({
       duration: 800,
       easing: "ease-in-out",
@@ -20,7 +26,7 @@ const CardList = () => {
   
 
   // Show full-screen centered spinner when loading
-  if (products.length === 0) {
+  if (loading) {
     return (
       <div
         className="d-flex justify-content-center align-items-center"
@@ -31,6 +37,16 @@ const CardList = () => {
           
         </div>
       </div>
+    );
+  }
+
+  if (products.length === 0) {
+    return (
+      <section className="py-5">
+        <div className="container text-center text-white ">
+          <h2>No products history</h2>
+        </div>
+      </section>
     );
   }
 
