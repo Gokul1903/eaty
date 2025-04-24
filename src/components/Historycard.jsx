@@ -35,6 +35,8 @@ const HistoryCard = ({ user, address, totalAmount, status, items, id,Phone }) =>
         color:
           status === "pending"
             ? "rgb(187 184 36)"
+            : status === "accepted"
+            ? "rgb(124 187 36)"
             : status === "foodready"
             ? "rgb(169 255 8)"
             : status === "delivered"
@@ -49,7 +51,7 @@ const HistoryCard = ({ user, address, totalAmount, status, items, id,Phone }) =>
   {Phone && (
     <a
       href={`tel:${Phone}`}
-      title="Call User"
+      title="Call Owner"
       className="mb-2"
       style={{
         position: "relative",
@@ -67,7 +69,7 @@ const HistoryCard = ({ user, address, totalAmount, status, items, id,Phone }) =>
   
 </div>
 
-      {status==="pending"?<button onClick={async()=>{
+      {status==="pending" || status==="accepted"?<button onClick={async()=>{
         const confirmcancel = window.confirm("Are you sure?");
         if (confirmcancel) {
           await cancelOrder(id);
