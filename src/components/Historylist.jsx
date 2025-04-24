@@ -75,6 +75,7 @@ const Historylist = () => {
                 paymentMethod={order.paymentMethod}
                 items={order.items}
                 id={order._id}
+                Phone={order.ownerId.phone}
               />
             </div>
           ))}
