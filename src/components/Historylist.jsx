@@ -63,25 +63,25 @@ const Historylist = () => {
   // UI - Orders Found
   return (
     <section className="py-5">
-      <div className="container">
-        <div className="row">
-          {orders.map((order) => (
-            <div className="col-md-6" key={order._id}>
-              <HistoryCard
-                user={order.userId.name}
-                address={order.Address}
-                totalAmount={order.totalAmount}
-                status={order.status}
-                paymentMethod={order.paymentMethod}
-                items={order.items}
-                id={order._id}
-                Phone={order.ownerId.phone}
-              />
-            </div>
-          ))}
+  <div className="container">
+    <div className="row">
+      {[...orders].reverse().map((order) => (
+        <div className="col-md-6" key={order._id}>
+          <HistoryCard
+            user={order.userId.name}
+            address={order.Address}
+            totalAmount={order.totalAmount}
+            status={order.status}
+            paymentMethod={order.paymentMethod}
+            items={order.items}
+            id={order._id}
+            Phone={order.ownerId.phone}
+          />
         </div>
-      </div>
-    </section>
+      ))}
+    </div>
+  </div>
+</section>
   );
 };
 
