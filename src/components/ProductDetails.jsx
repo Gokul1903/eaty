@@ -15,6 +15,7 @@ const ProductDetails = () => {
   const [address, setAddress] = useState("");
   const [room,setRoom]=useState("")
   const[block,setBlock]=useState("")
+  const[mobile,setMobile]=useState("");
   const [message, setMessage] = useState("");
   const ownerId = singleproduct?.ShopId;
 
@@ -39,7 +40,8 @@ const ProductDetails = () => {
             productId: singleproduct._id,
             quantity: parseInt(quantity),
           }
-        ]
+        ],
+        phone:mobile,
       }
       try {
         const responce=await fetch(`${API_URL}/user/placeOrder`,{
@@ -57,6 +59,7 @@ const ProductDetails = () => {
           setAddress("")
           setRoom("")
           setBlock("")
+          setMobile("")
           setMessage("Order placed successfully!");
 
           setTimeout(() => {
@@ -156,6 +159,19 @@ const ProductDetails = () => {
                     required
                   />
                 </div>
+                <div className="mb-3 text-start">
+                  <label htmlFor="address" className="form-label">Mobile No</label>
+                  <input
+                    type="text"
+                    id="form3Example1c"
+                    className="form-control custom-input  "
+                    maxLength={10}
+                    minLength={10}
+                    value={mobile}
+                    onChange={(e) => setMobile(e.target.value)}
+                    />
+                </div>
+                
                 
                 <div className="mb-3 text-start">
                   <label htmlFor="address" className="form-label">Additional Address Details</label>
@@ -168,6 +184,7 @@ const ProductDetails = () => {
                     required
                   ></textarea>
                 </div>
+
 
                 <button type="submit" className="btn w-100">
                   Place Order
