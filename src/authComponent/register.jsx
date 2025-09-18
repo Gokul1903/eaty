@@ -6,6 +6,7 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
@@ -26,24 +27,40 @@ const Register = () => {
     return "";
   };
 
+  const handlePasswordChange = (e) => {
+    const pwd = e.target.value;
+    setPassword(pwd);
+    const error = validatePassword(pwd);
+    setPasswordError(error); // live feedback
+  };
+
+  const handlePhoneChange = (e) => {
+    const val = e.target.value;
+    if (val.length <= 10 && /^\d*$/.test(val)) { // only digits, max 10
+      setPhone(val);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !email || !password) {
-      setMessage("Missing parameter");
+    if (!name || !email || !password || phone === "") {
+      setMessage("All fields are required.");
       return;
     }
 
-    // validate password before submit
-    const error = validatePassword(password);
-    if (error) {
-      setPasswordError(error);
+    if (passwordError) {
+      setMessage("Please fix the password before submitting.");
       return;
-    } else {
-      setPasswordError("");
     }
 
-    const newUser = { name, email, password };
+    const phoneInt = parseInt(phone);
+    if (phoneInt.toString().length !== 10) {
+      setMessage("Phone number must be a valid 10-digit number.");
+      return;
+    }
+
+    const newUser = { name, email, password, phone: phoneInt };
     try {
       const res = await fetch(`${API_URL}/auth/signup`, {
         method: "POST",
@@ -51,14 +68,16 @@ const Register = () => {
         body: JSON.stringify(newUser),
       });
       const data = await res.json();
+
       if (data.success) {
         setMessage(data.message);
         setName("");
         setEmail("");
         setPassword("");
+        setPhone("");
         navigate("/verify", { state: { email } });
       } else {
-        setMessage(` ${data.message}`);
+        setMessage(data.message);
       }
     } catch (error) {
       setMessage("Something went wrong. Please try again.");
@@ -79,20 +98,14 @@ const Register = () => {
                       Sign up
                     </p>
 
-                    {message && (
-                      <p className="text-center text-danger">{message}</p>
-                    )}
-                    {passwordError && (
-                      <p className="text-center text-warning">{passwordError}</p>
-                    )}
+                    {message && <p className="text-center text-danger">{message}</p>}
+                    {passwordError && <p className="text-center text-warning">{passwordError}</p>}
 
                     <form className="mx-1 mx-md-4" onSubmit={handleSubmit}>
-                      {/* name */}
+                      {/* Name */}
                       <div className="flex-row align-items-center mb-2">
                         <div className="form-outline flex-fill mb-0">
-                          <label className="form-label text-white">
-                            Your Name
-                          </label>
+                          <label className="form-label text-white">Your Name</label>
                           <input
                             type="text"
                             className="form-control custom-input"
@@ -102,12 +115,10 @@ const Register = () => {
                         </div>
                       </div>
 
-                      {/* email */}
+                      {/* Email */}
                       <div className="flex-row align-items-center mb-2">
                         <div className="form-outline flex-fill mb-0">
-                          <label className="form-label text-white">
-                            Your Email
-                          </label>
+                          <label className="form-label text-white">Your Email</label>
                           <input
                             type="email"
                             className="form-control custom-input"
@@ -117,17 +128,28 @@ const Register = () => {
                         </div>
                       </div>
 
-                      {/* password */}
+                      {/* Phone */}
+                      <div className="flex-row align-items-center mb-2">
+                        <div className="form-outline flex-fill mb-0">
+                          <label className="form-label text-white">Mobile No</label>
+                          <input
+                            type="number"
+                            className="form-control custom-input"
+                            value={phone}
+                            onChange={handlePhoneChange}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Password */}
                       <div className="flex-row align-items-center mb-2">
                         <div className="form-outline flex-fill">
-                          <label className="form-label text-white">
-                            Password
-                          </label>
+                          <label className="form-label text-white">Password</label>
                           <input
                             type="password"
                             className="form-control custom-input"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={handlePasswordChange}
                           />
                         </div>
                       </div>
@@ -138,7 +160,7 @@ const Register = () => {
                         </button>
                       </div>
                       <p className="text-center text-white mt-4">
-                        Have already an account?
+                        Already have an account?
                         <Link className="login" to={"/Login"}>
                           Login
                         </Link>
