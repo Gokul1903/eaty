@@ -1,9 +1,10 @@
 import { useEffect, useContext, useState } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 import HistoryCard from "./Historycard";
+  import ProtectedRouteUser from "./ProtectedRouteUser";
 
 const Historylist = () => {
-  const { orders, fetchOrder, message } = useContext(GlobalContext);
+  const { orders, fetchOrder } = useContext(GlobalContext);
 
   const [loading, setLoading] = useState(true);
 
@@ -22,18 +23,6 @@ const Historylist = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Unauthorized
-  if (message === "Unauthorized" || message === "Invalid Token") {
-    return (
-      <section className="py-5">
-        <div className="container">
-          <div className="row">
-            <h1 className="text-center">Unauthorized</h1>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   // Loading Spinner
   if (loading) {
@@ -85,4 +74,8 @@ const Historylist = () => {
   );
 };
 
-export default Historylist;
+export default ()=>(
+  <ProtectedRouteUser>
+    <Historylist/>
+  </ProtectedRouteUser>
+) ;
