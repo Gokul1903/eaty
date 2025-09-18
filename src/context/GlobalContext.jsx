@@ -42,23 +42,26 @@ const GlobalProvider=({children})=>{
         }
     }
 
-    const fetchProfile =async ()=>{
-        try {
-            const response=await fetch(`${API_URL}/user/getProfile`,{
-                method: "GET",
-                credentials: "include",
-              });
-            const data=response.json()
-            if(data.success){
-                setProfile(data.user)
-            }
-            else{
-                console.error("Failed to fetch profile:", data.message)
-            }
-        } catch (error) {
-            console.error("error fetching products: ",error)
-        }
+    const fetchProfile = async () => {
+  try {
+    const response = await fetch(`${API_URL}/user/getProfile`, {
+      method: "GET",
+      credentials: "include",
+    });
+    const data = await response.json(); // ✅ Missing await
+
+    if (data.success) {
+      setProfile(data.user);
+    } else {
+      setProfile(null); // clear profile if unauthorized
+      console.error("Failed to fetch profile:", data.message);
     }
+  } catch (error) {
+    console.error("error fetching profile: ", error);
+    setProfile(null);
+  }
+};
+
     const fetchOrder = async () => {
         try {
           const response = await fetch(`${API_URL}/user/getHistory`, {

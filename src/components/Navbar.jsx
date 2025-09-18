@@ -1,32 +1,18 @@
+import { useContext, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { GlobalContext } from "../context/GlobalContext";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuRef = useRef(null);
+  const { profile, fetchProfile } = useContext(GlobalContext);
 
-  // Close menu on outside click
+  // Load profile on mount
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setIsMenuOpen(false);
-      }
-    };
-
-    if (isMenuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isMenuOpen]);
+    fetchProfile();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -34,11 +20,10 @@ const Navbar = () => {
         method: "POST",
         credentials: "include",
       });
-
       const data = await res.json();
-
       if (data.success) {
         navigate("/Login");
+        window.location.reload(); // optional: force re-check profile
       } else {
         alert("Logout failed: " + data.message);
       }
@@ -54,78 +39,48 @@ const Navbar = () => {
           EATY
         </Link>
 
-        {/* Custom toggle button */}
-        <button
-          className="navbar-toggler"
-          type="button"
-          onClick={() => setIsMenuOpen((prev) => !prev)}
-          style={{
-            border: "none",
-            background: "transparent",
-            outline: "none",
-          }}
-        >
-          <span
-            className="navbar-toggler-icon"
-            style={{
-              filter:
-                "invert(54%) sepia(97%) saturate(630%) hue-rotate(74deg) brightness(120%) contrast(114%)",
-            }}
-          ></span>
-        </button>
-
-        {/* Backdrop */}
-        {isMenuOpen && (
-          <div
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100vw",
-              height: "100vh",
-              zIndex: 1,
-            }}
-          />
-        )}
-
-        {/* Menu */}
-        <div
-          className={`collapse navbar-collapse ${isMenuOpen ? "show" : ""}`}
-          id="navbarNav"
-          ref={menuRef}
-          style={{ zIndex: 2 }}
-        >
+        <div className="collapse navbar-collapse show" id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
               <Link
                 className={`nav-link ${location.pathname === "/Home" ? "active" : ""}`}
                 to="/Home"
-                onClick={() => setIsMenuOpen(false)}
               >
                 <i className="bi bi-house-door"></i> Home
               </Link>
             </li>
-            <li className="nav-item">
-              <Link
-                className={`nav-link ${location.pathname === "/History" ? "active" : ""}`}
-                to="/History"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <i className="bi bi-clock-history"></i> History
-              </Link>
-            </li>
-            <li className="nav-item">
-              <button
-                className="nav-link btn-link"
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  handleLogout();
-                }}
-                style={{ textDecoration: "none" }}
-              >
-                <i className="bi bi-box-arrow-right"></i> Logout
-              </button>
-            </li>
+
+            {/* 👇 Only show if logged in */}
+            {profile ? (
+              <>
+                <li className="nav-item">
+                  <Link
+                    className={`nav-link ${location.pathname === "/History" ? "active" : ""}`}
+                    to="/History"
+                  >
+                    <i className="bi bi-clock-history"></i> History
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <button
+                    className="nav-link btn-link"
+                    onClick={handleLogout}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <i className="bi bi-box-arrow-right"></i> Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              <li className="nav-item">
+                <Link
+                  className={`nav-link ${location.pathname === "/Login" ? "active" : ""}`}
+                  to="/Login"
+                >
+                  <i className="bi bi-box-arrow-in-right"></i> Login
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>
