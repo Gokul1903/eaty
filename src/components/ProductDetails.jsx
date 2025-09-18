@@ -26,61 +26,68 @@ const ProductDetails = () => {
   }, [id]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!quantity || !address) {
-      setMessage("Please enter quantity and address");
-      return;
-    }
+  // check required fields
+  if (!quantity || !address || !mobile || !room || !block) {
+    setMessage("Please fill all required fields");
+    return;
+  }
 
-    setLoading(true); // start spinner
-    const orderData = {
-      ownerId,
-      Address: room + " " + block + " " + address,
-      availability,
-      items: [
-        {
-          productId: singleproduct._id,
-          quantity: parseInt(quantity),
-        },
-      ],
-      phone: mobile,
-    };
+  // validate mobile number
+  if (mobile.length !== 10 || !/^\d{10}$/.test(mobile)) {
+    setMessage("Mobile number must be exactly 10 digits");
+    return;
+  }
 
-    try {
-      const response = await fetch(`${API_URL}/user/placeOrder`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(orderData),
-        credentials: "include",
-      });
-
-      const data = await response.json();
-      if (data.success) {
-        setQuantity(1);
-        setAddress("");
-        setRoom("");
-        setBlock("");
-        setMobile("");
-        setMessage("Order placed successfully!");
-
-        setTimeout(() => {
-          navigate("/Home");
-        }, 3000);
-      } else {
-        setMessage(`Error: ${data.message}`);
-        if (data.message === "unauthorised" || data.message === "Invalid Token") {
-          setTimeout(() => {
-            navigate("/Login");
-          }, 1000);
-        }
-      }
-    } catch (error) {
-      setMessage("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false); // stop spinner
-    }
+  setLoading(true); // start spinner
+  const orderData = {
+    ownerId,
+    Address: room + " " + block + " " + address,
+    availability,
+    items: [
+      {
+        productId: singleproduct._id,
+        quantity: parseInt(quantity),
+      },
+    ],
+    phone: mobile,
   };
+
+  try {
+    const response = await fetch(`${API_URL}/user/placeOrder`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(orderData),
+      credentials: "include",
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      setQuantity(1);
+      setAddress("");
+      setRoom("");
+      setBlock("");
+      setMobile("");
+      setMessage("Order placed successfully!");
+      setTimeout(() => {
+        navigate("/Home");
+      }, 3000);
+    } else {
+      setMessage(`Error: ${data.message}`);
+      if (data.message === "unauthorised" || data.message === "Invalid Token") {
+        setTimeout(() => {
+          navigate("/Login");
+        }, 1000);
+      }
+    }
+  } catch (error) {
+    setMessage("Something went wrong. Please try again.");
+  } finally {
+    setLoading(false); // stop spinner
+  }
+};
+
 
   if (!singleproduct) {
     return (
@@ -166,12 +173,18 @@ const ProductDetails = () => {
                   <div className="mb-3 text-start">
                     <label className="form-label">Mobile No</label>
                     <input
-                      type="text"
+                      type="number"
                       className="form-control"
                       maxLength={10}
                       minLength={10}
                       value={mobile}
-                      onChange={(e) => setMobile(e.target.value)}
+                      
+                      onChange={(e) => {
+                      const val = e.target.value;
+                      if (val.length <= 10 && val>=0) {       // limit to 10 digits
+                        setMobile(val);
+                      }
+                      }}
                     />
                   </div>
                   <div className="mb-3 text-start">
